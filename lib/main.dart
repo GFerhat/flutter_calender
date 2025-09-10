@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x00EFBCD5)),
       ),
-      home: const Calendar(),
+      home: Calendar(),
     );
   }
 }
