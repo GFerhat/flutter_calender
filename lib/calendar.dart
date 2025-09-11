@@ -6,9 +6,7 @@ import 'package:flutter_calender/widgets/headsection.dart';
 
 class Calendar extends StatelessWidget {
   Calendar({super.key});
-  DateTime date = DateTime(2025, 10, 1);
-  // DateTime get localDateTime => date;
-
+  final date = DateTime.now();
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
