@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:isoweek/isoweek.dart';
+import 'package:flutter_calender/utils/holiday_checker.dart';
 
 class TableGenerator extends StatelessWidget {
-  DateTime date;
-  TableGenerator({super.key, required this.date});
+  final DateTime date;
+  const TableGenerator({super.key, required this.date});
   @override
   Widget build(BuildContext context) {
     DateTime firstOfMonth = DateTime(date.year, date.month, 1);
@@ -38,7 +39,16 @@ class TableGenerator extends StatelessWidget {
         int calendarWeek = int.parse(currentWeekString);
         cellContent = calendarWeek + weekCounter;
       }
-      return TableCell(child: Text(cellContent.toString()));
+      HolidayChecker checker = HolidayChecker(date: date);
+      bool isHoliday = checker.isHoliday(
+        DateTime(date.year, date.month, cellContent),
+      );
+      return TableCell(
+        child: Text(
+          cellContent.toString(),
+          style: isHoliday ? TextStyle(color: Colors.amberAccent) : null,
+        ),
+      );
     }
 
     return Container(

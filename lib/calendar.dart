@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_calender/widgets/calender_generation.dart';
 import 'package:flutter_calender/widgets/headsection.dart';
 
 class Calendar extends StatelessWidget {
   Calendar({super.key});
-  final date = DateTime.now();
+  final date = DateTime(2025, 4, 1);
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(

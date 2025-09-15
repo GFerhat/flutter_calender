@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calender/calendar.dart';
+import 'package:flutter_calender/utils/holiday_checker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +13,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HolidayChecker holidays = HolidayChecker(date: DateTime(2023, 1, 1));
+    print(holidays.getEasterSunday());
     return MaterialApp(
       title: 'dyncamicCalender',
       theme: ThemeData(
