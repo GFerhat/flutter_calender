@@ -13,8 +13,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HolidayChecker holidays = HolidayChecker(date: DateTime(2023, 1, 1));
-    print(holidays.getEasterSunday());
     return MaterialApp(
       title: 'dyncamicCalender',
       theme: ThemeData(

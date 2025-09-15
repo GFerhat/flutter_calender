@@ -29,7 +29,7 @@ class TableGenerator extends StatelessWidget {
       return TableRow(children: day);
     }
 
-    TableCell generateDay(int dayCounter, int weekCounter) {
+    TableCell generateCell(int dayCounter, int weekCounter) {
       int cellContent = weekCounter * 7 + dayCounter - firstOfMonth.weekday + 1;
       if (cellContent > daysOfMonth) cellContent = cellContent - daysOfMonth;
       if (cellContent < 1) cellContent = cellContent + daysOfPrevMonth;
@@ -40,13 +40,17 @@ class TableGenerator extends StatelessWidget {
         cellContent = calendarWeek + weekCounter;
       }
       HolidayChecker checker = HolidayChecker(date: date);
-      bool isHoliday = checker.isHoliday(
-        DateTime(date.year, date.month, cellContent),
-      );
+      bool isHoliday =
+          !(dayCounter == 0) &&
+          checker.getHoliday(DateTime(date.year, date.month, cellContent)) != null;
       return TableCell(
         child: Text(
           cellContent.toString(),
-          style: isHoliday ? TextStyle(color: Colors.amberAccent) : null,
+          style: dayCounter == 0
+              ? TextStyle(color: const Color.fromARGB(255, 68, 217, 231))
+              : isHoliday
+              ? TextStyle(color: const Color.fromARGB(255, 206, 170, 40))
+              : null,
         ),
       );
     }
@@ -60,7 +64,7 @@ class TableGenerator extends StatelessWidget {
           for (int weekCounter = 0; weekCounter < 6; weekCounter++)
             generateWeek([
               for (int dayCounter = 0; dayCounter <= 7; dayCounter++)
-                generateDay(dayCounter, weekCounter),
+                generateCell(dayCounter, weekCounter),
             ]),
         ],
       ),

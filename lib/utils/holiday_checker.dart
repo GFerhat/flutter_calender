@@ -6,62 +6,94 @@ class HolidayChecker {
   final DateTime date;
   HolidayChecker({required this.date});
 
-  bool isHoliday(DateTime selectedDate) {
-    List<Holiday> holidaysList = _getAllHolidays();
-    final holiday = holidaysList.firstWhereOrNull(
+  Holiday? getHoliday(DateTime selectedDate) {
+    List<Holiday> holidayList = _getAllHolidays();
+    return holidayList.firstWhereOrNull(
       (element) => selectedDate == element.date,
     );
-    return holiday == null ? false : true;
   }
 
   List<Holiday> _getAllHolidays() {
     final List<Holiday> allHolidays = [];
-    final Holiday easterSunday = Holiday(
-      date: getEasterSunday(),
-      holidayName: "Easter",
-      dateAsString: DateFormatterHelper.formatDate(date),
+    final Holiday easterSunday = _getEasterSunday(); 
+    final Holiday easterMonday = _getEasterMonday(easterSunday.date);
+    final Holiday himmelfahrt = _getHimmelfahrt(easterSunday.date);
+    final Holiday pfingsten = _getPfingsten(easterSunday.date);
+    final Holiday karfreitag = _getKarfreitag(easterSunday.date);
+    final Holiday fronleichnam = _getFronleichnam(easterSunday.date);
+    final Holiday tagDerDeutschenEinheit = Holiday(
+      date: DateTime(date.year, 10, 3),
+      holidayName: "Tag der Deutschen Einheit",
+      dateAsString: DateFormatterHelper.formatDate(DateTime(date.year, 10, 3)),
     );
-    final Holiday easterMonday = Holiday(
-      date: getEasterSunday().add(Duration(days: 1)),
-      holidayName: "Easter Monday",
-      dateAsString: DateFormatterHelper.formatDate(date),
-    );
-    final Holiday himmelfahrt = Holiday(
-      date: getEasterSunday().add(Duration(days: 39)),
-      holidayName: "Himmelfahrt",
-      dateAsString: DateFormatterHelper.formatDate(date),
-    );
-    final Holiday pfingsten = Holiday(
-      date: getEasterSunday().add(Duration(days: 49)),
-      holidayName: "Pfingsten",
-      dateAsString: DateFormatterHelper.formatDate(date),
-    );
-    final Holiday karfreitag = Holiday(
-      date: getEasterSunday().add(Duration(days: -2)),
-      holidayName: "Karfreitag",
-      dateAsString: DateFormatterHelper.formatDate(date),
-    );
-    final Holiday fronLeichnam = Holiday(
-      date: getEasterSunday().add(Duration(days: 60)),
-      holidayName: "Fronleichnam",
-      dateAsString: DateFormatterHelper.formatDate(date),
-    );
+
     allHolidays.addAll([
       easterSunday,
+      easterMonday,
       himmelfahrt,
       pfingsten,
       karfreitag,
-      fronLeichnam,
+      fronleichnam,
+      tagDerDeutschenEinheit,
     ]);
     return allHolidays;
   }
 
-  // String() {
-  //   final DateTime easterSunday = getEasterSunday(date.year);
-  //   return easterSunday.toIso8601String();
-  // }
+  Holiday _getEasterMonday(DateTime easterSundayDate) {
+    final Holiday easterMonday = Holiday(
+      date: easterSundayDate.add(Duration(days: 1)),
+      holidayName: "Easter Monday",
+      dateAsString: DateFormatterHelper.formatDate(
+        easterSundayDate.add(Duration(days: 1)),
+      ),
+    );
+    return easterMonday;
+  }
 
-  DateTime getEasterSunday() {
+  Holiday _getHimmelfahrt(DateTime easterSundayDate) {
+    final Holiday himmelfahrt = Holiday(
+      date: easterSundayDate.add(Duration(days: 39)),
+      holidayName: "Himmelfahrt",
+      dateAsString: DateFormatterHelper.formatDate(
+        easterSundayDate.add(Duration(days: 39)),
+      ),
+    );
+    return himmelfahrt;
+  }
+
+  Holiday _getPfingsten(DateTime easterSundayDate) {
+    final Holiday pfingsten = Holiday(
+      date: easterSundayDate.add(Duration(days: 49)),
+      holidayName: "Pfingsten",
+      dateAsString: DateFormatterHelper.formatDate(
+        easterSundayDate.add(Duration(days: 49)),
+      ),
+    );
+    return pfingsten;
+  }
+
+  Holiday _getKarfreitag(DateTime easterSundayDate) {
+    final Holiday karfreitag = Holiday(
+      date: easterSundayDate.add(Duration(days: -2)),
+      holidayName: "Karfreitag",
+      dateAsString: DateFormatterHelper.formatDate(
+        easterSundayDate.add(Duration(days: -2)),
+      ),
+    );
+    return karfreitag;
+  }
+
+  Holiday _getFronleichnam(DateTime easterSundayDate) {
+    return Holiday(
+      date: easterSundayDate.add(Duration(days: 60)),
+      holidayName: "Fronleichnam",
+      dateAsString: DateFormatterHelper.formatDate(
+        easterSundayDate.add(Duration(days: 60)),
+      ),
+    );
+  }
+
+  Holiday _getEasterSunday() {
     final year = date.year;
     //Spencer algorythm to get eastern Date
     int a = year % 19;
@@ -78,20 +110,11 @@ class HolidayChecker {
     int m = ((a + 11 * h + 22 * l) / 451).floor();
     int n = ((h + l - 7 * m + 114) / 31).floor();
     int o = (h + l - 7 * m + 114) % 31;
-    return DateTime(year, n, o + 1);
-    //n is month o is the day
+    final easterDate = DateTime(year, n, o + 1); //n is month o is the day
+    return Holiday(
+      date: easterDate,
+      holidayName: "Easter",
+      dateAsString: DateFormatterHelper.formatDate(date),
+    );
   }
 }
-  // Function getFlexibleHoliday() {
-  // var osternDate = getOsterSonntag(year);
-
-  //berechnet die vom Ostern abhängigen Feiertage- + / - addiert / subtrahiert Tage
-  // ostermontag  + 1);
-
-  // christiHimmelfahrt + 39);
-
-  // pfingsten + 49);
-
-  // karfreitag - 2);
-
-  // fronleichnam + 60);
