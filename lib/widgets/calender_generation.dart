@@ -16,13 +16,24 @@ class TableGenerator extends StatelessWidget {
       List<TableCell> calendarHeader = [];
       for (int i = 0; i < weekdays.length; i++) {
         calendarHeader.add(
-          TableCell(child: Container(child: Text(weekdays[i]))),
+          TableCell(
+            child: Container(
+              height: 40, // Set your desired height
+              padding: EdgeInsets.symmetric(),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xFFEAD8C0)),
+                color: Color(0xFFFFF6EC),
+              ),
+              child: Text(
+                weekdays[i],
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+          ),
         );
       }
-      return TableRow(
-        decoration: BoxDecoration(color: Color.fromARGB(255, 212, 198, 198)),
-        children: calendarHeader,
-      );
+      return TableRow(children: calendarHeader);
     }
 
     TableRow generateWeek(List<TableCell> day) {
@@ -42,21 +53,27 @@ class TableGenerator extends StatelessWidget {
       HolidayChecker checker = HolidayChecker(date: date);
       bool isHoliday =
           !(dayCounter == 0) &&
-          checker.getHoliday(DateTime(date.year, date.month, cellContent)) != null;
+          checker.getHoliday(DateTime(date.year, date.month, cellContent)) !=
+              null;
       return TableCell(
-        child: Text(
-          cellContent.toString(),
-          style: dayCounter == 0
-              ? TextStyle(color: const Color.fromARGB(255, 68, 217, 231))
-              : isHoliday
-              ? TextStyle(color: const Color.fromARGB(255, 206, 170, 40))
-              : null,
+        child: Container(
+          alignment: Alignment.center,
+          height: 30,
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFEAD8C0)),
+            color: dayCounter == 0
+                ? Color((0xFF70C1B3))
+                : isHoliday
+                ? Color.fromARGB(255, 138, 189, 214)
+                : null,
+          ),
+          child: Text(cellContent.toString()),
         ),
       );
     }
 
     return Container(
-      padding: EdgeInsets.all(20.0),
+      margin: EdgeInsets.all(3.0),
       decoration: BoxDecoration(border: Border.all(color: Colors.black)),
       child: Table(
         children: <TableRow>[
