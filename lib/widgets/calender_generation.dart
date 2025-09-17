@@ -4,7 +4,12 @@ import 'package:flutter_calender/utils/holiday_checker.dart';
 
 class TableGenerator extends StatelessWidget {
   final DateTime date;
-  const TableGenerator({super.key, required this.date});
+  final Function(DateTime) onChangeDate;
+  const TableGenerator({
+    super.key,
+    required this.date,
+    required this.onChangeDate,
+  });
   @override
   Widget build(BuildContext context) {
     DateTime firstOfMonth = DateTime(date.year, date.month, 1);
@@ -22,8 +27,13 @@ class TableGenerator extends StatelessWidget {
               padding: EdgeInsets.symmetric(),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFEAD8C0)),
-                color: Color(0xFFFFF6EC),
+                border: Border(
+                  left: BorderSide(
+                    //                   <--- left side
+                    color: Colors.black,
+                  ),
+                  top: BorderSide(color: Colors.black),
+                ),
               ),
               child: Text(
                 weekdays[i],
@@ -56,25 +66,41 @@ class TableGenerator extends StatelessWidget {
           checker.getHoliday(DateTime(date.year, date.month, cellContent)) !=
               null;
       return TableCell(
-        child: Container(
-          alignment: Alignment.center,
-          height: 30,
-          decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xFFEAD8C0)),
-            color: dayCounter == 0
-                ? Color((0xFF70C1B3))
-                : isHoliday
-                ? Color.fromARGB(255, 138, 189, 214)
-                : null,
+        child: GestureDetector(
+          onTap: () {},
+          child: Container(
+            alignment: Alignment.center,
+            height: 30,
+            decoration: BoxDecoration(
+              // border: Border.all(color: const Color(0xFFEAD8C0)),
+              // color: dayCounter == 0
+              // ? Color((0xFF70C1B3))
+              // : isHoliday
+              // ? Color.fromARGB(255, 138, 189, 214)
+              // : null,
+            ),
+            child: Text(cellContent.toString()),
           ),
-          child: Text(cellContent.toString()),
         ),
       );
     }
 
     return Container(
       margin: EdgeInsets.all(3.0),
-      decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+      decoration: BoxDecoration(
+        // border: Border.all(color: Colors.black),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: [.5, .0, .5, .0],
+          colors: [
+            Color(0xFF2E7D32),
+            Color(0xFF2E7D32),
+            Colors.white,
+            Colors.white,
+          ],
+        ),
+      ),
       child: Table(
         children: <TableRow>[
           generateCalendarHead(),
