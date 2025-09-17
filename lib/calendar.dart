@@ -15,13 +15,17 @@ class _CalendarState extends State<Calendar> {
     setState(() {
       date = selectedDate;
     });
+    debugPrint('${date.day}');
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(56.0), // or your desired height
-        child: Header(), // Replace 'YourTitle' with the required argument
+        child: Header(
+          date: date,
+        ), // Replace 'YourTitle' with the required argument
       ),
       body: TableGenerator(date: date, onChangeDate: changeSelectedDate),
     );

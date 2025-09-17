@@ -65,24 +65,29 @@ class TableGenerator extends StatelessWidget {
           !(dayCounter == 0) &&
           checker.getHoliday(DateTime(date.year, date.month, cellContent)) !=
               null;
-      return TableCell(
-        child: GestureDetector(
-          onTap: () {},
-          child: Container(
-            alignment: Alignment.center,
-            height: 30,
-            decoration: BoxDecoration(
-              // border: Border.all(color: const Color(0xFFEAD8C0)),
-              // color: dayCounter == 0
-              // ? Color((0xFF70C1B3))
-              // : isHoliday
-              // ? Color.fromARGB(255, 138, 189, 214)
-              // : null,
-            ),
-            child: Text(cellContent.toString()),
-          ),
+      DateTime dateChanger = DateTime(date.year, date.month, cellContent);
+      Widget childTableCell = Container(
+        alignment: Alignment.center,
+        height: 30,
+        decoration: BoxDecoration(
+          // border: Border.all(color: const Color(0xFFEAD8C0)),
+          // color: dayCounter == 0
+          // ? Color((0xFF70C1B3))
+          // : isHoliday
+          // ? Color.fromARGB(255, 138, 189, 214)
+          // : null,
         ),
+        child: Text(cellContent.toString()),
       );
+      if (dayCounter != 0) {
+        childTableCell = GestureDetector(
+          child: childTableCell,
+          onTap: () {
+            onChangeDate(dateChanger);
+          },
+        );
+      }
+      return TableCell(child: childTableCell);
     }
 
     return Container(
